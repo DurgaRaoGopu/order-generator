@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-const storeName = "Jirón de la Unión";
+const storeName = "Des Moines";
 const storeMetadata = {
-  storeId: "Jirón8",
-  storeAddress: "Jirón de la Unión 599, Lima 15001, Peru",
+  storeId: "DM8",
+  storeAddress: "Siddhesh Home",
 };
 
 const IndexPage = () => {
@@ -18,7 +18,7 @@ const IndexPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetch("http://35.215.236.128:3005/api/menuItems")
+    fetch("http://35.222.207.203:3005/api/menuItems")
       .then((response) => response.json())
       .then((data) => {
         setMenuItems(data);
@@ -29,7 +29,7 @@ const IndexPage = () => {
       .catch((error) => console.error("Failed to load menu items:", error));
 
     // Fetch completed orders
-    fetch("http://35.215.236.128/api/getCompletedOrders")
+    fetch("http://35.222.207.203/api/getCompletedOrders")
       .then((response) => response.json())
       .then((data) => {
         setCompletedOrders(data); // Directly setting the data as it's already in the correct format
@@ -93,24 +93,21 @@ const IndexPage = () => {
     setIsSubmitting(true);
     setSubmissionStatus("");
     try {
-      const response = await fetch(
-        "http://35.215.236.128:3005/api/submitOrder",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            requestStartTime: Date.now(),
-            items: order.map((item) => ({
-              id: item.id,
-              name: item.name,
-              price: item.price,
-              quantity: item.quantity,
-            })),
-            storeMetadata,
-            totalPrice: calculateTotalPrice(),
-          }),
-        }
-      );
+      const response = await fetch("http://35.222.207.203/api/submitOrder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          requestStartTime: Date.now(),
+          items: order.map((item) => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+          })),
+          storeMetadata,
+          totalPrice: calculateTotalPrice(),
+        }),
+      });
       const data = await response.json();
       if (response.ok) {
         setCompletedOrders([
@@ -120,7 +117,8 @@ const IndexPage = () => {
             items: order,
             totalPrice: calculateTotalPrice(),
             latency: data.pubSubLatency,
-            latency1: data.totalLatency,
+            latency2: data.uiToApiLatency,
+            latency1: data.totalRoundTripLatency,
           },
           ...completedOrders,
         ]);
@@ -222,6 +220,7 @@ const IndexPage = () => {
                     : 0
                   ).toFixed(2)}
                 </p>
+                <p>UI to API Latency: {completedOrder.latency2 || "N/A"}</p>
                 <p>Pub/Sub Latency: {completedOrder.latency || "N/A"}</p>
                 <p>Total API Latency: {completedOrder.latency1 || "N/A"}</p>
               </div>
