@@ -117,7 +117,7 @@ const IndexPage = () => {
             items: order,
             totalPrice: calculateTotalPrice(),
             latency: data.pubSubLatency,
-            latency2: data.uiToApiLatency,
+            latency2: data.containerLatency,
             latency1: data.totalRoundTripLatency,
           },
           ...completedOrders,
