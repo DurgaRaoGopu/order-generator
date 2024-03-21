@@ -1,10 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-const storeName = "London";
+const storeName = "Gandhi Square";
 const storeMetadata = {
-  storeId: "London-8",
-  storeAddress: "11-59 High Road, East Finchley London, N2 8AW",
+  storeId: "Gandhi_square-8",
+  storeAddress: "Cnr Rissik &, Marshall St, Marshalltown, Johannesburg, 2107, South Africa",
 };
 
 const IndexPage = () => {
