@@ -18,7 +18,7 @@ const IndexPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetch("http://35.244.84.155:3005/api/menuItems")
+    fetch("http://35.195.6.59:3005/api/menuItems")
       .then((response) => response.json())
       .then((data) => {
         setMenuItems(data);
@@ -29,7 +29,7 @@ const IndexPage = () => {
       .catch((error) => console.error("Failed to load menu items:", error));
 
     // Fetch completed orders
-    fetch("http://35.244.84.155:3005/api/getCompletedOrders")
+    fetch("http://35.195.6.59:3005/api/getCompletedOrders")
       .then((response) => response.json())
       .then((data) => {
         setCompletedOrders(data); // Directly setting the data as it's already in the correct format
@@ -93,7 +93,7 @@ const IndexPage = () => {
     setIsSubmitting(true);
     setSubmissionStatus("");
     try {
-      const response = await fetch("http://35.244.84.155:3005/api/submitOrder", {
+      const response = await fetch("http://35.195.6.59:3005/api/submitOrder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
