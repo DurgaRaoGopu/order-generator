@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-edge-ui-deployment
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: my-edge-ui
+  template:
+    metadata:
+      labels:
+        app: my-edge-ui
+    spec:
+      containers:
+        - name: my-edge-ui-container
+          image: sidh2901/my-edge-ui:latest
+          ports:
+            - containerPort: 80
