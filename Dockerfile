@@ -7,6 +7,8 @@ WORKDIR /usr/src/app
 # Copies package.json and package-lock.json to Docker environment
 COPY package*.json ./
 
+RUN npm install
+
 # Install any needed packages specified in package.json
 # Here, we don't use --ignore-scripts to ensure postinstall scripts run
 RUN npm ci
