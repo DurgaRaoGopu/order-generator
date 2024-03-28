@@ -9,6 +9,7 @@ services:
       - "3005:3005"
     networks:
       - app-network
+    container_name: api_service
 
   order-generator:
     build:
@@ -18,6 +19,7 @@ services:
       - "3000:3000"
     networks:
       - app-network
+    container_name: order_generator
 
   prometheus:
     image: prom/prometheus:latest
@@ -36,6 +38,7 @@ services:
     depends_on:
       - cadvisor
     restart: always
+    container_name: prometheus
 
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
@@ -51,6 +54,7 @@ services:
     restart: always
     deploy:
       mode: global
+    container_name: cadvisor
 
   node-exporter:
     image: quay.io/prometheus/node-exporter:latest
@@ -72,6 +76,7 @@ services:
     restart: always
     deploy:
       mode: global
+    container_name: node_exporter
 
 networks:
   app-network:
