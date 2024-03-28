@@ -1,10 +1,12 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const storeName = "Gandhi Square";
 const storeMetadata = {
   storeId: "Gandhi_square-8",
-  storeAddress: "Cnr Rissik &, Marshall St, Marshalltown, Johannesburg, 2107, South Africa",
+  storeAddress: "Rothschild Blvd 33, Tel Aviv-Yafo, 6688302, Israel",
 };
 
 const IndexPage = () => {
@@ -18,7 +20,38 @@ const IndexPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    fetch("http://10.218.0.3:3005/api/menuItems")
+    fetchMenuItems();
+    // Fetch completed orders
+    fetch("http://localhost:3005/api/getCompletedOrders")
+      .then((response) => response.json())
+      .then((data) => {
+        setCompletedOrders(data);
+      })
+      .catch((error) =>
+        console.error("Failed to load completed orders:", error)
+      );
+    const ws = new WebSocket("ws://localhost:3005");
+    ws.onopen = () => {
+      console.log("WebSocket connected");
+    };
+    ws.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      console.log("Received update:", message);
+      if (message.message) {
+        //alert(message.message);
+        toast.info(message.message);
+        fetchMenuItems();
+      }
+    };
+    ws.onerror = (error) => {
+      console.error("WebSocket error:", error);
+    };
+    return () => {
+      ws.close();
+    };
+  }, []);
+  const fetchMenuItems = () => {
+    fetch("http://localhost:3005/api/menuItems")
       .then((response) => response.json())
       .then((data) => {
         setMenuItems(data);
@@ -27,19 +60,6 @@ const IndexPage = () => {
         }
       })
       .catch((error) => console.error("Failed to load menu items:", error));
-
-    // Fetch completed orders
-    fetch("http://10.218.0.3:3005/api/getCompletedOrders")
-      .then((response) => response.json())
-      .then((data) => {
-        setCompletedOrders(data); // Directly setting the data as it's already in the correct format
-      })
-      .catch((error) =>
-        console.error("Failed to load completed orders:", error)
-      );
-  }, []);
-  const handlePageChange = (event, newPage) => {
-    setCurrentPage(newPage);
   };
 
   // Function to handle items per page change
@@ -93,7 +113,7 @@ const IndexPage = () => {
     setIsSubmitting(true);
     setSubmissionStatus("");
     try {
-      const response = await fetch("http://10.218.0.3:3005/api/submitOrder", {
+      const response = await fetch("http://localhost:3005/api/submitOrder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -145,6 +165,17 @@ const IndexPage = () => {
         />
         <h1>Welcome to {storeName} McDonald's Restaurant</h1>
       </header>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="menu-selector">
         <select
           value={selectedItemId}
