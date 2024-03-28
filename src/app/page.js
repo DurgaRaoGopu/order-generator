@@ -22,7 +22,7 @@ const IndexPage = () => {
   useEffect(() => {
     fetchMenuItems();
     // Fetch completed orders
-    fetch("http://localhost:3005/api/getCompletedOrders")
+    fetch("http://10.128.0.4:3005/api/getCompletedOrders")
       .then((response) => response.json())
       .then((data) => {
         setCompletedOrders(data);
@@ -30,7 +30,7 @@ const IndexPage = () => {
       .catch((error) =>
         console.error("Failed to load completed orders:", error)
       );
-    const ws = new WebSocket("ws://localhost:3005");
+    const ws = new WebSocket("ws://10.128.0.4:3005");
     ws.onopen = () => {
       console.log("WebSocket connected");
     };
@@ -51,7 +51,7 @@ const IndexPage = () => {
     };
   }, []);
   const fetchMenuItems = () => {
-    fetch("http://localhost:3005/api/menuItems")
+    fetch("http://10.128.0.4:3005/api/menuItems")
       .then((response) => response.json())
       .then((data) => {
         setMenuItems(data);
@@ -113,7 +113,7 @@ const IndexPage = () => {
     setIsSubmitting(true);
     setSubmissionStatus("");
     try {
-      const response = await fetch("http://localhost:3005/api/submitOrder", {
+      const response = await fetch("http://10.128.0.4:3005/api/submitOrder", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
