@@ -3,11 +3,15 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const storeName = "Gandhi Square";
+const storeName = "Iowa,USA";
 const storeMetadata = {
-  storeId: "Gandhi_square-8",
-  storeAddress: "Rothschild Blvd 33, Tel Aviv-Yafo, 6688302, Israel",
+        storeId: "Des_Moines-2",
+  storeAddress: "1404 Des Moines St, Des Moines, IA 50316",
 };
+const API_HOST = process.env.REACT_APP_API_HOST;
+console.log(`API Key is: ${API_HOST}`);
+console.log('Starting application...');
+console.log(`API host: ${process.env.REACT_APP_API_HOST}`);
 
 const IndexPage = () => {
   const [menuItems, setMenuItems] = useState([]);
@@ -22,7 +26,7 @@ const IndexPage = () => {
   useEffect(() => {
     fetchMenuItems();
     // Fetch completed orders
-    fetch("http://10.128.0.4:3005/api/getCompletedOrders")
+    fetch(`http://${API_HOST}:3005/api/getCompletedOrders`)
       .then((response) => response.json())
       .then((data) => {
         setCompletedOrders(data);
@@ -30,7 +34,7 @@ const IndexPage = () => {
       .catch((error) =>
         console.error("Failed to load completed orders:", error)
       );
-    const ws = new WebSocket("ws://10.128.0.4:3005");
+    const ws = new WebSocket(`ws://${API_HOST}:3005`);
     ws.onopen = () => {
       console.log("WebSocket connected");
     };
@@ -51,7 +55,7 @@ const IndexPage = () => {
     };
   }, []);
   const fetchMenuItems = () => {
-    fetch("http://10.128.0.4:3005/api/menuItems")
+    fetch(`http://${API_HOST}:3005/api/menuItems`)
       .then((response) => response.json())
       .then((data) => {
         setMenuItems(data);
@@ -113,7 +117,7 @@ const IndexPage = () => {
     setIsSubmitting(true);
     setSubmissionStatus("");
     try {
-      const response = await fetch("http://10.128.0.4:3005/api/submitOrder", {
+      const response = await fetch(`http://${API_HOST}:3005/api/submitOrder`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -163,7 +167,7 @@ const IndexPage = () => {
           alt="McDonald's Logo"
           className="logo"
         />
-        <h1>Welcome to {storeName} McDonald's Restaurant</h1>
+        <h1>Welcome to {storeName}</h1>
       </header>
       <ToastContainer
         position="top-right"
