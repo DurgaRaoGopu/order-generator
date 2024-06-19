@@ -22,6 +22,13 @@ RUN npm run build
 # Your application will bind to port 3000, so use the EXPOSE instruction to have it mapped by the docker daemon
 EXPOSE 3000
 
+# Copy entrypoint script into the image
+COPY docker-entrypoint.sh /usr/src/app/docker-entrypoint.sh
+RUN chmod +x /usr/src/app/docker-entrypoint.sh
+
+# Set the entrypoint
+ENTRYPOINT ["/usr/src/app/docker-entrypoint.sh"]
+
 # Defines the command to run your app. Here, we use "npm run start" to start a production server
 # If you're running in a development environment inside Docker, you might use "npm run dev"
 # However, for production, it's better to use "start"
