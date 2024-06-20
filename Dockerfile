@@ -16,12 +16,14 @@ RUN npm ci
 # Copies the rest of your application to the Docker environment
 COPY . .
 
-# Example: Set REACT_APP_API_HOST as a build ARG
-ARG REACT_APP_API_HOST
-RUN echo $REACT_APP_API_HOST > /usr/src/app/.env
+# Copy the entrypoint script into the container
+COPY entrypoint.sh /usr/src/app/entrypoint.sh
 
-# Build your Next.js application
-RUN npm run build
+# Ensure the entrypoint script is executable
+RUN chmod +x /usr/src/app/entrypoint.sh
+
+# Use the entrypoint script
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
 # Your application will bind to port 3000, so use the EXPOSE instruction to have it mapped by the docker daemon
 EXPOSE 3000
