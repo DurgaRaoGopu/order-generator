@@ -26,7 +26,7 @@ RUN chmod +x /usr/src/app/entrypoint.sh
 ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
 
 # Your application will bind to port 3000, so use the EXPOSE instruction to have it mapped by the docker daemon
-EXPOSE 3000
+EXPOSE 3322
 
 # Defines the command to run your app. Here, we use "npm run start" to start a production server
 # If you're running in a development environment inside Docker, you might use "npm run dev"
