@@ -10,7 +10,7 @@ jobs:
 
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: order-gen
 
     steps:
     - uses: actions/checkout@v4
@@ -22,7 +22,7 @@ jobs:
       
   deploy:
 
-    runs-on: ubuntu-latest
+    runs-on: order-gen
     steps:
     - uses: actions/checkout@v4
     - name: checking the docker images
